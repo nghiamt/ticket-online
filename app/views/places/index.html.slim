@@ -1,0 +1,29 @@
+h1 Listing places
+
+table
+  thead
+    tr
+      th Name
+      th Description
+      th Image url1
+      th Image url2
+      th Image url3
+      th
+      th
+      th
+
+  tbody
+    - @places.each do |place|
+      tr
+        td = place.name
+        td = place.description
+        td = place.image_url1
+        td = place.image_url2
+        td = place.image_url3
+        td = link_to 'Show', place
+        td = link_to 'Edit', edit_place_path(place)
+        td = link_to 'Destroy', place, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Place', new_place_path

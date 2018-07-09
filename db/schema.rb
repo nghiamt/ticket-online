@@ -10,7 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_09_141353) do
+ActiveRecord::Schema.define(version: 2018_07_09_145441) do
+
+  create_table "order_lines", force: :cascade do |t|
+    t.integer "quantity"
+    t.integer "order_id"
+    t.integer "ticket_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_lines_on_order_id"
+    t.index ["ticket_id"], name: "index_order_lines_on_ticket_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.string "receiver_name"
+    t.string "receiver_address"
+    t.integer "total_amount"
+    t.string "status"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "places", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "image_url1"
+    t.string "image_url2"
+    t.string "image_url3"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tickets", force: :cascade do |t|
+    t.string "name"
+    t.integer "price"
+    t.integer "place_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["place_id"], name: "index_tickets_on_place_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false

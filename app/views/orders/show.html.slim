@@ -1,0 +1,21 @@
+p#notice = notice
+
+p
+  strong Receiver name:
+  = @order.receiver_name
+p
+  strong Receiver address:
+  = @order.receiver_address
+p
+  strong Total amount:
+  = @order.total_amount
+p
+  strong Status:
+  = @order.status
+p
+  strong User:
+  = @order.user
+
+=> link_to 'Edit', edit_order_path(@order)
+'|
+=< link_to 'Back', orders_path

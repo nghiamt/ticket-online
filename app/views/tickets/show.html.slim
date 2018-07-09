@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @ticket.name
+p
+  strong Price:
+  = @ticket.price
+p
+  strong Place:
+  = @ticket.place
+
+=> link_to 'Edit', edit_ticket_path(@ticket)
+'|
+=< link_to 'Back', tickets_path
