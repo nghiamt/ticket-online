@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :orders
+  resources :order_lines
   resources :places do
     resources :tickets
   end

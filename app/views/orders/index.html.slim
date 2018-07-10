@@ -1,29 +1,16 @@
-h1 Listing orders
+h1 購入履歴
 
-table
-  thead
-    tr
-      th Receiver name
-      th Receiver address
-      th Total amount
-      th Status
-      th User
-      th
-      th
-      th
-
-  tbody
-    - @orders.each do |order|
-      tr
-        td = order.receiver_name
-        td = order.receiver_address
-        td = order.total_amount
-        td = order.status
-        td = order.user
-        td = link_to 'Show', order
-        td = link_to 'Edit', edit_order_path(order)
-        td = link_to 'Destroy', order, data: { confirm: 'Are you sure?' }, method: :delete
-
-br
-
-= link_to 'New Order', new_order_path
+- @orders.each_with_index do |order, index|
+  .col-md-6
+    h4 = "#{index+1}. #{order.updated_at.strftime('%Y年%m月%d日 %H:%M')}"
+  .col-md-6.text-right
+    h4 = "#{order.total_amount}円"
+  - order.order_lines.each do |order_line|
+    .col-md-6
+      = order_line.ticket.place.name
+    .col-md-3
+      = order_line.ticket.name
+    .col-md-1
+      = order_line.quantity
+    .col-md-2.text-right
+      = "#{order_line.ticket.price * order_line.quantity}円"

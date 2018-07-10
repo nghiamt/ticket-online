@@ -1,2 +1,35 @@
-h1 Dashboard#index
-p Find me in app/views/dashboard/index.html.slim
+- @places.each_with_index do |place, index|
+  .col-md-12
+    h2 = place.name
+    .col-md-6
+      .carousel.slide data-ride="carousel" id="carousel-place-#{index}"
+        ol.carousel-indicators
+          li data-target="#carousel-place-#{index}" data-slide-to="0" class="active"
+          li data-target="#carousel-place-#{index}" data-slide-to="1"
+          li data-target="#carousel-place-#{index}" data-slide-to="2"
+        .carousel-inner
+          - no_image_link = "https://blog.stylingandroid.com/wp-content/themes/lontano-pro/images/no-image-slide.png"
+          .item.active
+            img src=(place.image_url1.presence || no_image_link) style="width:100%; height: 300px;"
+          .item
+            img src=(place.image_url2.presence || no_image_link) style="width:100%; height: 300px;"
+          .item
+            img src=(place.image_url3.presence || no_image_link) style="width:100%; height: 300px;"
+        a.left.carousel-control href="#carousel-place-#{index}" data-slide="prev"
+          span.glyphicon.glyphicon-chevron-left
+          span.sr-only Previous
+        a.right.carousel-control href="#carousel-place-#{index}" data-slide="next"
+          span.glyphicon.glyphicon-chevron-right
+          span.sr-only Next
+    .col-md-6
+      h5 style="white-space: pre-line" = place.description
+      - order_line = current_user.pending_order.order_lines.new
+      .actions
+        = form_for order_line, remote: true do |f|
+          .col-md-6
+            = select_tag :ticket_id, options_for_select(place.tickets.collect{|tk| [tk.name, tk.id]}.unshift(['チケットを選択してください', nil])), class: "form-control"
+          .col-md-3
+            = number_field_tag :quantity, nil, class: "form-control"
+            = hidden_field_tag :type, "add"
+          .col-md-1
+            = f.submit "購入", class: "btn btn-primary", type: "submit"

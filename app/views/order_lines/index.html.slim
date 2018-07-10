@@ -1,0 +1,31 @@
+h1 カート
+
+- total_amount = 0
+- @order_lines.each do |order_line|
+  - total_amount += order_line.quantity * order_line.ticket.price
+  .col-md-6
+    = order_line.ticket.place.name
+  .col-md-3
+    = order_line.ticket.name
+  .col-md-1
+    = order_line.quantity
+  .col-md-2.text-right
+    = "#{order_line.ticket.price * order_line.quantity}円"
+.col-md-12
+  hr
+.col-md-12.text-right
+  h4 = "#{total_amount}円"
+
+= form_for @order do |f|
+  .field
+    = f.label :receiver_name
+    = f.text_field :receiver_name, class: "form-control"
+  .field
+    = f.label :receiver_address
+    = f.text_field :receiver_address, class: "form-control"
+  .field
+    = f.hidden_field :total_amount, value: total_amount
+  .field
+    = f.hidden_field :status, value: "bought"
+  .actions 
+    = f.submit "購入する", class: "btn btn-primary", type: "submit"

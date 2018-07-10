@@ -21,7 +21,8 @@ html
         #navbar.navbar-collapse.collapse
           ul.nav.navbar-nav
             - if user_signed_in?
-              li = link_to '購入履歴', "#"
+              li = link_to '購入履歴', orders_path
+              li#cart = link_to "カート(#{current_user.pending_order.order_lines.sum(:quantity)})", order_lines_path
               - if current_user.admin?
                 li = link_to '観光地管理', places_path
           ul.nav.navbar-nav.navbar-right

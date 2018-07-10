@@ -9,4 +9,8 @@ class User < ApplicationRecord
   def admin?
     role == "admin"
   end
+
+  def pending_order
+    orders.find_or_create_by(status: "pending")
+  end
 end

@@ -1,0 +1,4 @@
+|
+
+  var text = "カート(#{current_user.pending_order.order_lines.sum(:quantity)})"
+  $("#cart").children("a").text(text)
