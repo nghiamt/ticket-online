@@ -4,7 +4,7 @@ class PlacesController < ApplicationController
   # GET /places
   # GET /places.json
   def index
-    @places = Place.all
+    @places = Place.order(created_at: :desc)
   end
 
   # GET /places/1
@@ -15,10 +15,16 @@ class PlacesController < ApplicationController
   # GET /places/new
   def new
     @place = Place.new
+    respond_to do |format|
+      format.js {render "form"}
+    end
   end
 
   # GET /places/1/edit
   def edit
+    respond_to do |format|
+      format.js {render "form"}
+    end
   end
 
   # POST /places
@@ -30,6 +36,10 @@ class PlacesController < ApplicationController
       if @place.save
         format.html { redirect_to @place, notice: 'Place was successfully created.' }
         format.json { render :show, status: :created, location: @place }
+        format.js do
+          @places = Place.order(created_at: :desc)
+          render "index"
+        end
       else
         format.html { render :new }
         format.json { render json: @place.errors, status: :unprocessable_entity }
@@ -44,6 +54,10 @@ class PlacesController < ApplicationController
       if @place.update(place_params)
         format.html { redirect_to @place, notice: 'Place was successfully updated.' }
         format.json { render :show, status: :ok, location: @place }
+        format.js do
+          @places = Place.order(created_at: :desc)
+          render "index"
+        end
       else
         format.html { render :edit }
         format.json { render json: @place.errors, status: :unprocessable_entity }

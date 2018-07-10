@@ -1,10 +1,14 @@
 class TicketsController < ApplicationController
+  before_action :set_place
   before_action :set_ticket, only: [:show, :edit, :update, :destroy]
 
   # GET /tickets
   # GET /tickets.json
   def index
-    @tickets = Ticket.all
+    @tickets = @place.tickets
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /tickets/1
@@ -24,12 +28,16 @@ class TicketsController < ApplicationController
   # POST /tickets
   # POST /tickets.json
   def create
-    @ticket = Ticket.new(ticket_params)
+    @ticket = @place.tickets.new(ticket_params)
 
     respond_to do |format|
       if @ticket.save
         format.html { redirect_to @ticket, notice: 'Ticket was successfully created.' }
         format.json { render :show, status: :created, location: @ticket }
+        format.js do 
+          @tickets = @place.tickets
+          render "create"
+        end
       else
         format.html { render :new }
         format.json { render json: @ticket.errors, status: :unprocessable_entity }
@@ -44,6 +52,10 @@ class TicketsController < ApplicationController
       if @ticket.update(ticket_params)
         format.html { redirect_to @ticket, notice: 'Ticket was successfully updated.' }
         format.json { render :show, status: :ok, location: @ticket }
+        format.js do 
+          @tickets = @place.tickets
+          render "create"
+        end
       else
         format.html { render :edit }
         format.json { render json: @ticket.errors, status: :unprocessable_entity }
@@ -58,6 +70,10 @@ class TicketsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to tickets_url, notice: 'Ticket was successfully destroyed.' }
       format.json { head :no_content }
+      format.js do 
+        @tickets = @place.tickets
+        render "create"
+      end
     end
   end
 
@@ -65,6 +81,10 @@ class TicketsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket
       @ticket = Ticket.find(params[:id])
+    end
+
+    def set_place
+      @place = Place.find(params[:place_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

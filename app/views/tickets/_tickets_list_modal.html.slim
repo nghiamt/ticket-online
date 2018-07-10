@@ -1,0 +1,11 @@
+- if @place.present?
+  #ticket-modal.modal.fade tabindex="-1" role="dialog" aria-labelledby="PlaceModal" aria-hidden="true" data-link=""
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close type="button" data-dismiss="modal"
+            span aria-hidden="true" &times;
+            span.sr-only Close
+          h4#ticket-modal-label.modal-title = "#{@place.name}のチケット管理"
+        #all_ticket.modal-body style="height: 500px; overflow: scroll;"
+          = render "all_ticket"

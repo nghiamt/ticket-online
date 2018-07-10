@@ -1,0 +1,30 @@
+- if @place.present?
+  #place-modal.modal.fade tabindex="-1" role="dialog" aria-labelledby="PlaceModal" aria-hidden="true" data-link=""
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close type="button" data-dismiss="modal"
+            span aria-hidden="true" &times;
+            span.sr-only Close
+          h4#place-modal-label.modal-title 観光地情報
+        = form_for @place, remote: true do |f|
+          .modal-body
+            .field
+              label 観光地名
+              = f.text_field :name, class: "form-control"
+            .field
+              label 説明文
+              = f.text_area :description, class: "form-control", rows: 10
+            .field
+              label 画像リンク1
+              = f.text_field :image_url1, class: "form-control"
+            .field
+              label 画像リンク2
+              = f.text_field :image_url2, class: "form-control"
+            .field
+              label 画像リンク3
+              = f.text_field :image_url3, class: "form-control"
+
+          .modal-footer
+            = f.submit "保存", class: "btn btn-primary", type: "submit"
+            button.btn.btn-default type="button" data-dismiss="modal" キャンセル
