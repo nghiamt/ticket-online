@@ -4,4 +4,5 @@
   $("#cart").children("a").text(text)
   if ($("#total_amount").length > 0) {
     $("#total_amount").text(#{current_user.pending_order.total_amount})
+    $("#total_price_#{@order_line.id}").text("#{@order_line.quantity * @order_line.ticket.price}円")
   }

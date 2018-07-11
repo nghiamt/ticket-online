@@ -10,11 +10,11 @@
         .carousel-inner
           - no_image_link = "https://blog.stylingandroid.com/wp-content/themes/lontano-pro/images/no-image-slide.png"
           .item.active
-            img src=(place.image_url1.presence || no_image_link) style="width:100%; height: 300px;"
+            img src=(place.image_url1.presence || no_image_link) style="width:100%; height: 400px;"
           .item
-            img src=(place.image_url2.presence || no_image_link) style="width:100%; height: 300px;"
+            img src=(place.image_url2.presence || no_image_link) style="width:100%; height: 400px;"
           .item
-            img src=(place.image_url3.presence || no_image_link) style="width:100%; height: 300px;"
+            img src=(place.image_url3.presence || no_image_link) style="width:100%; height: 400px;"
         a.left.carousel-control href="#carousel-place-#{index}" data-slide="prev"
           span.glyphicon.glyphicon-chevron-left
           span.sr-only Previous

@@ -4,12 +4,18 @@ class PlacesController < ApplicationController
   # GET /places
   # GET /places.json
   def index
+    unless current_user && current_user.admin?
+      redirect_to root_url
+    end
     @places = Place.order(created_at: :desc)
   end
 
   # GET /places/1
   # GET /places/1.json
   def show
+    unless current_user && current_user.admin?
+      redirect_to root_url
+    end
   end
 
   # GET /places/new

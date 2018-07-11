@@ -52,6 +52,7 @@ class OrderLinesController < ApplicationController
   # PATCH/PUT /order_lines/1
   # PATCH/PUT /order_lines/1.json
   def update
+    order = current_user.pending_order
     old_quantity = @order_line.quantity.to_i
     @order_line.quantity = params[:quantity].to_i
     respond_to do |format|
