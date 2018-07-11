@@ -43,6 +43,10 @@ class PlacesController < ApplicationController
       else
         format.html { render :new }
         format.json { render json: @place.errors, status: :unprocessable_entity }
+        format.js do
+          @errors = @place.errors
+          render "layouts/errors"
+        end
       end
     end
   end
@@ -61,6 +65,10 @@ class PlacesController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @place.errors, status: :unprocessable_entity }
+        format.js do
+          @errors = @place.errors
+          render "layouts/errors"
+        end
       end
     end
   end

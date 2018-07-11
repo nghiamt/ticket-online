@@ -41,6 +41,10 @@ class TicketsController < ApplicationController
       else
         format.html { render :new }
         format.json { render json: @ticket.errors, status: :unprocessable_entity }
+        format.js do
+          @errors = @ticket.errors
+          render "layouts/errors"
+        end
       end
     end
   end
@@ -59,6 +63,10 @@ class TicketsController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @ticket.errors, status: :unprocessable_entity }
+        format.js do
+          @errors = @ticket.errors
+          render "layouts/errors"
+        end
       end
     end
   end

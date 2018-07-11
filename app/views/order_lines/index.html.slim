@@ -8,24 +8,24 @@ h1 カート
   .col-md-3
     = order_line.ticket.name
   .col-md-1
-    = order_line.quantity
+    = form_for order_line, remote: true, authenticity_token: true do |f|
+      = number_field_tag :quantity, order_line.quantity, {:onchange=>'$(this.form).submit();'}
+      = hidden_field_tag :type, "change"
   .col-md-2.text-right
-    = "#{order_line.ticket.price * order_line.quantity}円"
+    = "#{order_line.ticket.price}円"
 .col-md-12
   hr
 .col-md-12.text-right
-  h4 = "#{total_amount}円"
-
-= form_for @order do |f|
-  .field
-    = f.label :receiver_name
-    = f.text_field :receiver_name, class: "form-control"
-  .field
-    = f.label :receiver_address
-    = f.text_field :receiver_address, class: "form-control"
-  .field
-    = f.hidden_field :total_amount, value: total_amount
-  .field
-    = f.hidden_field :status, value: "bought"
-  .actions 
-    = f.submit "購入する", class: "btn btn-primary", type: "submit"
+  h4#total_amount = "#{total_amount}円"
+.col-md-12
+  = form_for @order, remote: true do |f|
+    .field
+      = f.label :receiver_name
+      = f.text_field :receiver_name, class: "form-control"
+    .field
+      = f.label :receiver_address
+      = f.text_field :receiver_address, class: "form-control"
+    .field
+      = f.hidden_field :status, value: "bought"
+    .actions 
+      = f.submit "購入する", class: "btn btn-primary", type: "submit"

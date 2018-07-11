@@ -2,3 +2,6 @@
 
   var text = "カート(#{current_user.pending_order.order_lines.sum(:quantity)})"
   $("#cart").children("a").text(text)
+  if ($("#total_amount").length > 0) {
+    $("#total_amount").text(#{current_user.pending_order.total_amount})
+  }

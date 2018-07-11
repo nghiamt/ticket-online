@@ -4,7 +4,7 @@ class OrderLinesController < ApplicationController
   # GET /order_lines
   # GET /order_lines.json
   def index
-    @order_lines = current_user.pending_order.order_lines
+    @order_lines = current_user.pending_order.order_lines.where("quantity > ?", 0)
     @order = current_user.pending_order
   end
 
@@ -25,18 +25,26 @@ class OrderLinesController < ApplicationController
   # POST /order_lines
   # POST /order_lines.json
   def create
-    @order_line = current_user.pending_order.order_lines.find_or_create_by(ticket_id: params[:ticket_id])
+    order = current_user.pending_order
+    @order_line = order.order_lines.find_or_create_by(ticket_id: params[:ticket_id])
+    old_quantity = @order_line.quantity.to_i
     base_quantity =  params[:type] == "add" ? @order_line.quantity.to_i : 0
     @order_line.quantity = base_quantity + params[:quantity].to_i
 
     respond_to do |format|
       if @order_line.save
+        total_amount = order.total_amount.to_i + @order_line.ticket.price * (params[:quantity].to_i - old_quantity)
+        order.update total_amount: total_amount
         format.html { redirect_to @order_line, notice: 'Order line was successfully created.' }
         format.json { render :show, status: :created, location: @order_line }
         format.js
       else
         format.html { render :new }
         format.json { render json: @order_line.errors, status: :unprocessable_entity }
+        format.js do
+          @errors = @order_line.errors
+          render "layouts/errors"
+        end
       end
     end
   end
@@ -44,13 +52,22 @@ class OrderLinesController < ApplicationController
   # PATCH/PUT /order_lines/1
   # PATCH/PUT /order_lines/1.json
   def update
+    old_quantity = @order_line.quantity.to_i
+    @order_line.quantity = params[:quantity].to_i
     respond_to do |format|
-      if @order_line.update(order_line_params)
+      if @order_line.save
+        total_amount = order.total_amount.to_i + @order_line.ticket.price * (params[:quantity].to_i - old_quantity)
+        order.update total_amount: total_amount
         format.html { redirect_to @order_line, notice: 'Order line was successfully updated.' }
         format.json { render :show, status: :ok, location: @order_line }
+        format.js {render "create"}
       else
         format.html { render :edit }
         format.json { render json: @order_line.errors, status: :unprocessable_entity }
+        format.js do
+          @errors = @order_line.errors
+          render "layouts/errors"
+        end
       end
     end
   end
