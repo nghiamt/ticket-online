@@ -23,15 +23,16 @@
           span.sr-only Next
     .col-md-6
       h5 style="white-space: pre-line" = place.description
-      - order_line = current_user.pending_order.order_lines.new
-      hr
-      h4 チケット購入
-      .actions
-        = form_for order_line, remote: true do |f|
-          .col-md-8
-            = select_tag :ticket_id, options_for_select(place.tickets.collect{|tk| [tk.name, tk.id]}.unshift(['チケットを選択してください', nil])), class: "form-control"
-          .col-md-2
-            = select_tag :quantity, options_for_select([1, 2, 3, 4, 5]), class: "form-control"
-            = hidden_field_tag :type, "add"
-          .col-md-1
-            = f.submit "購入", class: "btn btn-primary", type: "submit"
+      - if user_signed_in?
+        - order_line = current_user.pending_order.order_lines.new
+        hr
+        h4 チケット購入
+        .actions
+          = form_for order_line, remote: true do |f|
+            .col-md-8
+              = select_tag :ticket_id, options_for_select(place.tickets.collect{|tk| [tk.name, tk.id]}.unshift(['チケットを選択してください', nil])), class: "form-control"
+            .col-md-2
+              = select_tag :quantity, options_for_select([1, 2, 3, 4, 5]), class: "form-control"
+              = hidden_field_tag :type, "add"
+            .col-md-1
+              = f.submit "購入", class: "btn btn-primary", type: "submit"
